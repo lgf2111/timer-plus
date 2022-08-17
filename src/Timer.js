@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTimer } from 'react-timer-hook';
 
 export default function Timer({ expiryTimestamp }) {

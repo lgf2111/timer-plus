@@ -1,6 +1,6 @@
 import React, {useState, useRef} from 'react'
 
-import Timer, {restart} from './Timer'
+import Timer from './Timer'
 
 function App() {
   // useState & useRef
