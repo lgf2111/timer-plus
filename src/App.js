@@ -1,6 +1,6 @@
 import React, {useState, useRef} from 'react'
 
-import Timer from './Timer'
+import Timer, {restart} from './Timer'
 
 function App() {
   // useState & useRef
@@ -81,22 +81,33 @@ function App() {
   }
   
   function handleStartTimer(e) {
-    const hour = hour1Ref.current.value*10 + hour2Ref.current.value
-    const minute = minute1Ref.current.value*10 + minute2Ref.current.value
-    const second = second1Ref.current.value*10 + second2Ref.current.value
-    const initTime = hour*3600 + minute*60 + second
+    const hour = parseInt(hour1Ref.current.value)*10 + parseInt(hour2Ref.current.value)
+    const minute = parseInt(minute1Ref.current.value)*10 + parseInt(minute2Ref.current.value)
+    const second = parseInt(second1Ref.current.value)*10 + parseInt(second2Ref.current.value)
+    const totalSeconds = hour*3600 + minute*60 + second
+    const initTime = new Date()
+    initTime.setSeconds(initTime.getSeconds() + totalSeconds)
+
     hour1Ref.current.value = 0
     hour2Ref.current.value = 0
     minute1Ref.current.value = 0
     minute2Ref.current.value = 0
     second1Ref.current.value = 0
     second2Ref.current.value = 0
+
     setInitTime(initTime)
+  }
+
+  function handleRestartTimer(e) {
+    setInitTime(0)
   }
 
   return (
     <>
-    <Timer initTime={initTime}/>
+    {(() => {
+      if (initTime === 0) return <><span>00:00:00</span><br/></>
+      return <Timer expiryTimestamp={initTime}/>
+    })()}
     <input ref={hour1Ref} type="number" className="time-input" value={hour1} onChange={handleHour1Change}/>
     <input ref={hour2Ref} type="number" className="time-input" value={hour2} onChange={handleHour2Change}/>:
     <input ref={minute1Ref} type="number" className="time-input" value={minute1} onChange={handleMinute1Change}/>
@@ -105,7 +116,7 @@ function App() {
     <input ref={second2Ref} type="number" className="time-input" value={second2} onChange={handleSecond2Change}/>
     <br />
     <button onClick={handleStartTimer}>Start Timer</button>
-    <button>Clear Timer</button>
+    <button onClick={handleRestartTimer}>Restart Timer</button>
     </>
   )
 }
