@@ -6,6 +6,7 @@ function App() {
   // useState & useRef
   const [initTime, setInitTime] = useState(0)
   
+  // TODO: softcode them
   const [hour1, setHour1] = useState(0)
   const hour1Ref = useRef()
   
@@ -105,7 +106,7 @@ function App() {
   return (
     <>
     {(() => {
-      if (initTime === 0) return <><span>00:00:00</span><br/></>
+      if (initTime === 0) return <div className='timer idle'><span>00</span>:<span>00</span>:<span>00</span><br/></div>
       return <Timer expiryTimestamp={initTime}/>
     })()}
     <input ref={hour1Ref} type="number" className="time-input" value={hour1} onChange={handleHour1Change}/>
