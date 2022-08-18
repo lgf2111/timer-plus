@@ -2,14 +2,16 @@
     width: 2em;
 }
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+
+
+select {
+  /* for Firefox */
+  -moz-appearance: none;
+  /* for Chrome */
   -webkit-appearance: none;
-  margin: 0;
 }
 
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
+/* For IE10 */
+select::-ms-expand {
+  display: none;
 }
