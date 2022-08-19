@@ -15,33 +15,27 @@ export default function Timer({ expiryTimestamp }) {
   } = useTimer({ expiryTimestamp, autoStart: true, onExpire: onExpire });
   
   function onExpire() {
-    speak("Time's Up")
-    console.log("Time's Up")
+    let text = "Time's Up!"
+    speak(text)
+    console.log(text)
   }
 
-  function speak(msg) {
-    // TODO: mobile audio support
-    window.speechSynthesis.speak(new SpeechSynthesisUtterance(msg))
+  function speak(text) {
+    const msg = new SpeechSynthesisUtterance()
+    msg.text = text
+    window.speechSynthesis.speak(msg)
   }
 
   const totalSeconds = hours*3600 + minutes*60 + seconds
   console.log(totalSeconds)
 
-  const hours_ = hours.toLocaleString('en-US', {
-    minimumIntegerDigits: 2,
-    useGrouping: false
+  const [hours_, minutes_, seconds_] = [hours, minutes, seconds].map(el => {
+    return el.toLocaleString('en-US', {
+      minimumIntegerDigits: 2,
+      useGrouping: false
+    })
   })
-  
-  const minutes_ = minutes.toLocaleString('en-US', {
-    minimumIntegerDigits: 2,
-    useGrouping: false
-  })
-  
-  const seconds_ = seconds.toLocaleString('en-US', {
-    minimumIntegerDigits: 2,
-    useGrouping: false
-  })
-  
+
   const timerState = totalSeconds === 0 ? 'expired' : 'active'
   const timerClass = `timer ${timerState}`
 
