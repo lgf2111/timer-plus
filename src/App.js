@@ -9,6 +9,7 @@ function App() {
   const [stopTimer, setStopTimer] = useState(true)
   const [msg, setMsg] = useState(new SpeechSynthesisUtterance())
   const [done, setDone] = useState(false)
+  const [spoken, setSpoken] = useState("")
 
   const divRef = useRef()
   const secRef = useRef()
@@ -23,10 +24,12 @@ function App() {
     }, 1000);
     return () => clearInterval(checkDone);
   }, []);
-                  
+
   useEffect(() => {
-    // TODO: create memo to not speak if is duplicate
-    window.speechSynthesis.speak(msg)
+    if (spoken !== msg.text) {
+      window.speechSynthesis.speak(msg)
+      setSpoken(msg.text)
+    }
   }, [msg])
 
   const {
@@ -36,7 +39,6 @@ function App() {
   } = useTimer({ expiryTimestamp, autoStart: false, onExpire: () => {
     setStopTimer(false)
     divRef.current.className = "timer expired"
-    setMsg(new SpeechSynthesisUtterance("Time's Up!"))
   } });
 
   if (isRunning && seconds===0 && !done) {
