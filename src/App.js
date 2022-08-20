@@ -8,6 +8,7 @@ function App() {
   const [expiryTimestamp, setExpiryTimestamp] = useState(0)
   const [stopTimer, setStopTimer] = useState(true)
   const [msg, setMsg] = useState(new SpeechSynthesisUtterance())
+  const [done, setDone] = useState(false)
 
   const divRef = useRef()
   const secRef = useRef()
@@ -15,7 +16,14 @@ function App() {
   const options =  {hour:   {ref: useRef(), values: [...Array(25).keys()]},
                     minute: {ref: useRef(), values: [...Array(60).keys()]},
                     second: {ref: useRef(), values: [...Array(60).keys()]}}
-    
+
+  useEffect(() => {
+    const checkDone = setInterval(() => {
+      setDone(false)
+    }, 1000);
+    return () => clearInterval(checkDone);
+  }, []);
+                  
   useEffect(() => {
     window.speechSynthesis.speak(msg)
   }, [msg])
@@ -29,7 +37,7 @@ function App() {
     setMsg(new SpeechSynthesisUtterance("Time's Up!"))
   } });
 
-  if (isRunning && seconds===0) {
+  if (isRunning && seconds===0 && !done) {
     let msg = ""
     if (hours) {
       if (hours!==1) msg += `${hours} hours `
@@ -42,6 +50,15 @@ function App() {
     }
     msg += "left"
     setMsg(new SpeechSynthesisUtterance(msg))
+    setDone(true)
+  }
+  
+  if (isRunning && hours+minutes===0 && !done) {
+    let msg = ""
+    if (seconds<=10) msg += `${seconds}`
+    else if (seconds%10===0) msg += `${seconds} seconds left`
+    setMsg(new SpeechSynthesisUtterance(msg))
+    setDone(true)
   }
 
   const [hours_, minutes_, seconds_] = [hours, minutes, seconds].map(el => {
