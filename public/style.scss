@@ -1,0 +1,58 @@
+body {
+    height: 100vh; /* TODO: adjust height */
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.time-input {
+    width: 2em;
+}
+
+.timer select, span {
+font-size: 3em;
+font-family: 'Courier New', Courier, monospace;
+}  
+
+.timer select {
+    border-color: transparent;
+    outline: 1px black solid;
+    width: 57.6px;
+    margin-bottom: .1em;
+}
+
+.timer span {
+    outline: 1px black solid;
+}
+
+.timer.expired {
+    select {
+        color: red;
+    }
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}  
+
+select {
+/* for Firefox */
+-moz-appearance: none;
+/* for Chrome */
+-webkit-appearance: none;
+}
+
+/* For IE10 */
+select::-ms-expand {
+display: none;
+}

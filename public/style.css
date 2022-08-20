@@ -1,8 +1,55 @@
-.time-input {
-    width: 2em;
+body {
+  height: 100vh; /* TODO: adjust height */
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+.time-input {
+  width: 2em;
+}
 
+.timer select, span {
+  font-size: 3em;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.timer select {
+  border-color: transparent;
+  outline: 1px black solid;
+  width: 57.6px;
+  margin-bottom: 0.1em;
+}
+
+.timer span {
+  outline: 1px black solid;
+}
+
+.timer.expired {
+  -webkit-animation: blinker 1s linear infinite;
+          animation: blinker 1s linear infinite;
+}
+.timer.expired select {
+  color: red;
+}
+
+@-webkit-keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 
 select {
   /* for Firefox */
@@ -14,4 +61,4 @@ select {
 /* For IE10 */
 select::-ms-expand {
   display: none;
-}
+}/*# sourceMappingURL=style.css.map */

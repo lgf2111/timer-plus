@@ -1,34 +1,57 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import { useTimer } from 'react-timer-hook';
 
 import OptionList from './OptionList'
+import TimesUp from './TimesUp';
 
 function App() {
   const [expiryTimestamp, setExpiryTimestamp] = useState(0)
+  const [stopTimer, setStopTimer] = useState(true)
+  const [msg, setMsg] = useState(new SpeechSynthesisUtterance())
 
   const divRef = useRef()
+  const secRef = useRef()
 
   const options =  {hour:   {ref: useRef(), values: [...Array(25).keys()]},
                     minute: {ref: useRef(), values: [...Array(60).keys()]},
                     second: {ref: useRef(), values: [...Array(60).keys()]}}
     
+  useEffect(() => {
+    window.speechSynthesis.speak(msg)
+  }, [msg])
+
   const {
     seconds, minutes, hours, days,
     isRunning,
     start, pause, resume, restart,
   } = useTimer({ expiryTimestamp, autoStart: false, onExpire: () => {
-    let text = "Time's Up!"
-    window.speechSynthesis.speak(new SpeechSynthesisUtterance(text))
-    // TODO: fix expire className
     divRef.current.className = "timer expired"
+    setMsg(new SpeechSynthesisUtterance("Time's Up!"))
   } });
-  
+
+  if (isRunning && seconds===0) {
+    let msg = ""
+    if (hours) {
+      if (hours!==1) msg += `${hours} hours `
+      else msg += "1 hour "
+    }
+    if (minutes) {
+      if (msg.length) msg += "and "
+      if (minutes!==1) msg += `${minutes} minutes `
+      else msg += "1 minute "
+    }
+    msg += "left"
+    setMsg(new SpeechSynthesisUtterance(msg))
+  }
+
   const [hours_, minutes_, seconds_] = [hours, minutes, seconds].map(el => {
     return el.toLocaleString('en-US', {
       minimumIntegerDigits: 2,
       useGrouping: false
     })
   })
+
+  
 
   function handleStartTimer() {
     const hour = parseInt(options.hour.ref.current.value)
@@ -38,15 +61,34 @@ function App() {
     const expiryTimestamp = new Date()
     expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + totalSecond)
     setExpiryTimestamp(expiryTimestamp)
+    divRef.current.className = "timer active"
+    setStopTimer(false)
     restart(expiryTimestamp)
+  }
+
+  function handleStopTimer() {
+    setStopTimer(true)
+    divRef.current.className = "timer idle"
   }
 
   return (
     <>
-    <div ref={divRef} className={`timer ${isRunning?'active':'idle'}`}><span>{hours_}</span>:<span>{minutes_}</span>:<span>{seconds_}</span><br/></div>
-    <OptionList options={options}/>
-    <br />
-    <button onClick={handleStartTimer}>Start Timer</button>
+    {(()=>{
+      if (!isRunning && !stopTimer) return <TimesUp/>
+    })()}
+    <div ref={divRef} className="timer idle">
+      {(()=>{
+        if (isRunning) return <><span>{hours_}</span>:<span>{minutes_}</span>:<span ref={secRef}>{seconds_}</span></>
+        else return <OptionList options={options}/>
+      })()}
+    </div>
+    <br/>
+    <div className="buttons">
+      {(()=>{
+          if (!isRunning && stopTimer===true) return <button onClick={handleStartTimer}>Start Timer</button>
+          else return <button onClick={handleStopTimer}>Stop Timer</button>
+        })()}
+    </div>
     </>
   )
 }
