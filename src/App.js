@@ -25,6 +25,7 @@ function App() {
   }, []);
                   
   useEffect(() => {
+    // TODO: create memo to not speak if is duplicate
     window.speechSynthesis.speak(msg)
   }, [msg])
 
@@ -33,6 +34,7 @@ function App() {
     isRunning,
     start, pause, resume, restart,
   } = useTimer({ expiryTimestamp, autoStart: false, onExpire: () => {
+    setStopTimer(false)
     divRef.current.className = "timer expired"
     setMsg(new SpeechSynthesisUtterance("Time's Up!"))
   } });
@@ -68,8 +70,6 @@ function App() {
     })
   })
 
-  
-
   function handleStartTimer() {
     const hour = parseInt(options.hour.ref.current.value)
     const minute = parseInt(options.minute.ref.current.value)
@@ -79,11 +79,21 @@ function App() {
     expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + totalSecond)
     setExpiryTimestamp(expiryTimestamp)
     divRef.current.className = "timer active"
-    setStopTimer(false)
     restart(expiryTimestamp)
   }
 
-  function handleStopTimer() {
+  function handleResumeTimer() {
+    resume()
+    divRef.current.className = "timer active"
+  }
+
+  function handlePauseTimer() {
+    pause()
+    divRef.current.className = "timer idle"
+  }
+
+  function handleResetTimer() {
+    // TODO: handle reset midway
     setStopTimer(true)
     divRef.current.className = "timer idle"
   }
@@ -95,16 +105,20 @@ function App() {
     })()}
     <div ref={divRef} className="timer idle">
       {(()=>{
-        if (isRunning) return <><span>{hours_}</span>:<span>{minutes_}</span>:<span ref={secRef}>{seconds_}</span></>
+        if (hours+minutes+seconds!==0) return <><span>{hours_}</span>:<span>{minutes_}</span>:<span ref={secRef}>{seconds_}</span></>
         else return <OptionList options={options}/>
       })()}
     </div>
     <br/>
     <div className="buttons">
       {(()=>{
-          if (!isRunning && stopTimer===true) return <button onClick={handleStartTimer}>Start Timer</button>
-          else return <button onClick={handleStopTimer}>Stop Timer</button>
-        })()}
+        if (isRunning && stopTimer) return <button onClick={handlePauseTimer}>Pause Timer</button>
+        else return <button onClick={handleResumeTimer} disabled={hours+minutes+seconds===0}>Resume Timer</button>
+      })()}
+      {(()=>{
+        if (hours+minutes+seconds===0 && stopTimer) return <button onClick={handleStartTimer}>Start Timer</button>
+        else return <button onClick={handleResetTimer}>Reset Timer</button>
+      })()}
     </div>
     </>
   )
