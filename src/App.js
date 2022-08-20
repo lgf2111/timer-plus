@@ -93,9 +93,10 @@ function App() {
   }
 
   function handleResetTimer() {
-    // TODO: handle reset midway
     setStopTimer(true)
     divRef.current.className = "timer idle"
+    restart()
+    pause()
   }
 
   return (
