@@ -1,41 +1,59 @@
 body {
-    height: 100vh; /* TODO: adjust height */
+    height: 100vh;
     width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.time-input {
-    width: 2em;
+#root {
+    background: #0ABDF8;
+    padding: 1em;
+    border: 1px solid black;
+    border-radius: 1em;
+    box-shadow: 1em 1em 1em #007da6;
 }
 
-.timer select, span {
-font-size: 3em;
-font-family: 'Courier New', Courier, monospace;
-}  
+.timer {
+    background: #d6fffe;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 12vh;
+    width: 18vw;
+    border: 1px solid black;
+    border-radius: 1em;
+    select {
+        background: transparent;
+        padding-top: .2em;
+    }
+}
+
+.timer .overlay {
+    height: 12vh;
+    width: 18vw;
+    position: absolute;
+}
 
 .timer select {
+    font-size: 3em;
+    font-family: 'Courier New', Courier, monospace;    
     border-color: transparent;
-    outline: 1px black solid;
     width: 57.6px;
     margin-bottom: .1em;
-}
-
-.timer span {
-    outline: 1px black solid;
 }
 
 .timer.expired {
     select {
         color: red;
+        animation: blinker 1s linear infinite;
     }
     animation: blinker 1s linear infinite;
 }
 
 @keyframes blinker {
     50% {
-        opacity: 0;
+        color: rgba(0, 0, 0, 0);
     }
 }
 
@@ -61,3 +79,4 @@ select {
 select::-ms-expand {
 display: none;
 }
+

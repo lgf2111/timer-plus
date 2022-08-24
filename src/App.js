@@ -1,6 +1,7 @@
 import React, {useState, useRef, useEffect} from 'react'
 import { useTimer } from 'react-timer-hook';
 
+import Timer from './Timer';
 import OptionList from './OptionList'
 import TimesUp from './TimesUp';
 
@@ -11,17 +12,17 @@ function App() {
   const [done, setDone] = useState(false)
   const [spoken, setSpoken] = useState("")
 
-  const divRef = useRef()
-  const secRef = useRef()
+  const divRef = useRef() // Div for actual timer to change className
 
   const options =  {hour:   {ref: useRef(), values: [...Array(25).keys()]},
                     minute: {ref: useRef(), values: [...Array(60).keys()]},
                     second: {ref: useRef(), values: [...Array(60).keys()]}}
 
+  // Check if TTS is done
   useEffect(() => {
     const checkDone = setInterval(() => {
       setDone(false)
-    }, 1000);
+    }, 0);
     return () => clearInterval(checkDone);
   }, []);
 
@@ -65,18 +66,12 @@ function App() {
     setDone(true)
   }
 
-  const [hours_, minutes_, seconds_] = [hours, minutes, seconds].map(el => {
-    return el.toLocaleString('en-US', {
-      minimumIntegerDigits: 2,
-      useGrouping: false
-    })
-  })
-
   function handleStartTimer() {
     const hour = parseInt(options.hour.ref.current.value)
     const minute = parseInt(options.minute.ref.current.value)
     const second = parseInt(options.second.ref.current.value)
     const totalSecond = hour*3600 + minute*60 + second
+    if (totalSecond === 0) return alert("Insert time required!")
     const expiryTimestamp = new Date()
     expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + totalSecond)
     setExpiryTimestamp(expiryTimestamp)
@@ -106,21 +101,22 @@ function App() {
     {(()=>{
       if (!isRunning && !stopTimer) return <TimesUp/>
     })()}
+
     <div ref={divRef} className="timer idle">
       {(()=>{
-        if (hours+minutes+seconds!==0) return <><span>{hours_}</span>:<span>{minutes_}</span>:<span ref={secRef}>{seconds_}</span></>
+        if (hours+minutes+seconds!==0) return <Timer hours={hours} minutes={minutes} seconds={seconds}/>
         else return <OptionList options={options}/>
       })()}
     </div>
     <br/>
     <div className="buttons">
       {(()=>{
-        if (isRunning && stopTimer) return <button onClick={handlePauseTimer}>Pause Timer</button>
-        else return <button onClick={handleResumeTimer} disabled={hours+minutes+seconds===0}>Resume Timer</button>
-      })()}
-      {(()=>{
         if (hours+minutes+seconds===0 && stopTimer) return <button onClick={handleStartTimer}>Start Timer</button>
         else return <button onClick={handleResetTimer}>Reset Timer</button>
+      })()}
+      {(()=>{
+        if (isRunning && stopTimer) return <button onClick={handlePauseTimer}>Pause Timer</button>
+        else return <button onClick={handleResumeTimer} disabled={hours+minutes+seconds===0}>Resume Timer</button>
       })()}
     </div>
     </>
