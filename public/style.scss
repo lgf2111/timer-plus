@@ -4,14 +4,15 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
 #root {
     background: #0ABDF8;
-    padding: 1em;
+    padding: 15px;
     border: 1px solid black;
     border-radius: 1em;
-    box-shadow: 1em 1em 1em #007da6;
+    box-shadow: 10px 10px 10px #007da6;
 }
 
 .timer {
@@ -19,28 +20,28 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 12vh;
-    width: 18vw;
+    height: 70px;
+    width: 210px;
     border: 1px solid black;
     border-radius: 1em;
     select {
         background: transparent;
-        padding-top: .2em;
+        padding-top: 7px;
     }
 }
 
 .timer .overlay {
-    height: 12vh;
-    width: 18vw;
+    height: 70px;
+    width: 210px;
     position: absolute;
 }
 
 .timer select {
-    font-size: 3em;
+    font-size: clamp(28px, 7vw, 48px);
     font-family: 'Courier New', Courier, monospace;    
     border-color: transparent;
     width: 57.6px;
-    margin-bottom: .1em;
+    color: black;
 }
 
 .timer.expired {
@@ -64,7 +65,7 @@ body {
     align-items: center;
     button {
         width: 80%;
-        margin: .1em;
+        margin: 2px;
     }
 }
 
