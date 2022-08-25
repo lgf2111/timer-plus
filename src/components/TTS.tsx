@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { TTSProps } from './model'
 
-const TTS: React.FC<TTSProps> = ({idxs, isRunning}) => {
+const TTS: React.FC<TTSProps> = ({idxs, isRunning, spoken, setSpoken}) => {
   const [msg, setMsg] = useState(new SpeechSynthesisUtterance())
   const [done, setDone] = useState(false)
-  const [spoken, setSpoken] = useState("")
 
   useEffect(() => {
     const checkDone = setInterval(() => {

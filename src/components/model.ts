@@ -38,4 +38,6 @@ export interface TTSProps {
         second: number
     }
     isRunning: boolean
+    spoken: string
+    setSpoken: React.Dispatch<React.SetStateAction<string>>
 }

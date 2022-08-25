@@ -10,6 +10,7 @@ import './styles/App.css';
 
 const App: React.FC = () => {
   const [stopTimer, setStopTimer] = useState(true)
+  const [spoken, setSpoken] = useState("")
 
   const timerDivRef = useRef<HTMLDivElement>(null)
 
@@ -50,6 +51,7 @@ const App: React.FC = () => {
 
   const handleReset = () => {
     setStopTimer(true)
+    setSpoken("")
     timerDivRef.current!.className = "timer idle"
     const expiryTimestamp = new Date()
     restart(expiryTimestamp)
@@ -60,11 +62,11 @@ const App: React.FC = () => {
     <>
     {(()=>{
       if (!isRunning && !stopTimer) return <TimesUp/>
-                                    return <TTS idxs={idxs} isRunning={isRunning}/>
+                                    return <TTS idxs={idxs} isRunning={isRunning} spoken={spoken} setSpoken={setSpoken}/>
 
     })()}
     <div ref={timerDivRef} className="timer idle">
-      {(()=>{if (isRunning) return <div className="screen"></div> })()}
+      {(()=>{if (isRunning || !stopTimer) return <div className="screen"></div> })()}
       <SelectList selects={selects} idxs={idxs}/>
     </div>
     <div className="buttons">
