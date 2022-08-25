@@ -63,22 +63,22 @@ const App: React.FC = () => {
   }
 
   return (
-    <>
-    {(()=>{
-      if (!isRunning && !stopTimer) return <TimesUp/>
-                                    return <TTS idxs={idxs} isRunning={isRunning} spoken={spoken} setSpoken={setSpoken}/>
+    <div className='container'>
+      {(()=>{
+        if (!isRunning && !stopTimer) return <TimesUp/>
+                                      return <TTS idxs={idxs} isRunning={isRunning} spoken={spoken} setSpoken={setSpoken}/>
 
-    })()}
-    <div ref={timerDivRef} className="timer idle">
-      {(()=>{if (isRunning || !stopTimer) return <div className="screen"></div> })()}
-      <SelectList selects={selects} idxs={idxs}/>
+      })()}
+      <div ref={timerDivRef} className="timer idle">
+        {(()=>{if (isRunning || !stopTimer) return <div className="screen"></div> })()}
+        <SelectList selects={selects} idxs={idxs}/>
+      </div>
+      <div className="buttons">
+        {(()=>{if(!isRunning) return <button onClick={handleStart} disabled={!stopTimer}><i className="bi bi-play-fill"></i></button>
+                              return <button onClick={handlePause}><i className="bi bi-pause"></i></button>})()}
+        <button onClick={handleReset} disabled={totalSeconds===0 && stopTimer}><i className='bi bi-x'></i></button>
+      </div>
     </div>
-    <div className="buttons">
-      {(()=>{if(!isRunning) return <button onClick={handleStart} disabled={!stopTimer}><i className="bi bi-play-fill"></i></button>
-                            return <button onClick={handlePause}><i className="bi bi-pause"></i></button>})()}
-      <button onClick={handleReset} disabled={totalSeconds===0 && stopTimer}><i className='bi bi-x'></i></button>
-    </div>
-    </>
   )
 }
 
