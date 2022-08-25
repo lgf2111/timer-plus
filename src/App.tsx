@@ -36,6 +36,10 @@ const App: React.FC = () => {
     totalSelectedSeconds += parseInt(selects.hour.ref.current?.value!) * 3600
     totalSelectedSeconds += parseInt(selects.minute.ref.current?.value!) * 60
     totalSelectedSeconds += parseInt(selects.second.ref.current?.value!)
+    if (totalSelectedSeconds===0) {
+      timerDivRef.current!.className = "timer idle"
+      return alert("Input time required!")
+    }
     const expiryTimestamp = new Date()
     expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + totalSelectedSeconds)
     restart(expiryTimestamp)
