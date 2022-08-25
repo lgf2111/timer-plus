@@ -17,7 +17,7 @@ const TTS: React.FC<TTSProps> = ({idxs, isRunning, spoken, setSpoken}) => {
       window.speechSynthesis.speak(msg)
       setSpoken(msg.text)
     }  
-  }, [msg, spoken])
+  }, [msg, spoken, setSpoken])
 
   const [hours, minutes, seconds] = [idxs.hour, idxs.minute, idxs.second]
   
