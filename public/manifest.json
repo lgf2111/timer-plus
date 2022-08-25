@@ -1,6 +1,6 @@
 {
-  "short_name": "Timer Plus",
-  "name": "Timer with TTS",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",
