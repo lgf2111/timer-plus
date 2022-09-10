@@ -52,10 +52,12 @@ body {
 
     select {
         font-size: 50px;
+        text-align: center;
         width: 57px;
-        // outline: 1px solid black;
         border: 0;
         border-radius: 5px;
+        color: black;
+        background: white;
 
         // disable arrow
         /* for Firefox */
@@ -65,6 +67,13 @@ body {
         &::-ms-expand {
             /* for IE10 */
             display: none;
+        }
+
+        // Mobile Fix (Looks Worse)
+        @media (pointer:coarse) {
+            font-size: 1.8rem;
+            padding-top: 15px;
+            padding-bottom: 3px;        
         }
     }
 

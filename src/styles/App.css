@@ -54,9 +54,12 @@ body {
 }
 .timer select {
   font-size: 50px;
+  text-align: center;
   width: 57px;
   border: 0;
   border-radius: 5px;
+  color: black;
+  background: white;
   /* for Firefox */
   -moz-appearance: none;
   /* for Safari, Chrome, Opera */
@@ -65,6 +68,13 @@ body {
 .timer select::-ms-expand {
   /* for IE10 */
   display: none;
+}
+@media (pointer: coarse) {
+  .timer select {
+    font-size: 1.8rem;
+    padding-top: 15px;
+    padding-bottom: 3px;
+  }
 }
 .timer.idle select {
   outline: 1px solid black;
